@@ -3,6 +3,7 @@ const fs = require('fs')
 const aleko = fs.readFileSync('aleko.txt', 'utf8')
 const zahari = fs.readFileSync('zahari.txt', 'utf8')
 const input = fs.readFileSync('input.txt', 'utf8')
+const output = {aleko: 0, zahari: 0}
 
 function countWords(text) {
   var wordArr = text.replace(/[.,\/#!?$%\^&\*;:{}=\-_`~()]/g, '').split(' ')
@@ -40,19 +41,28 @@ function calssify() {
 			return
 		}
 
-    const alekoFreq = inputMap[curr] / alekoMap[curr]
-    const zahriFreq = inputMap[curr] / zahariMap[curr]
-
-    if (alekoFreq < zahriFreq) res.zahari++
-    else if (alekoFreq > zahriFreq) res.aleko++
+    if (alekoMap[curr] < zahariMap[curr]) res.zahari++
+    else if (alekoMap[curr] > zahariMap[curr]) res.aleko++
 		else {
 			res.aleko++
 			res.zahari++
 		}
   });
 
-  return res;
+  let sum = (res.aleko + res.zahari) || 1
+  output.aleko = Math.round( res.aleko / sum * 100 )
+  output.zahari = Math.round( res.zahari / sum * 100 )
 }
 
+function print() {
+  if (output.aleko == output.zahari) {
+    console.log("\nThe input can't be classified between Aleko Konstantinov and Zahari Stoyanov.\n")
+    return
+  }
+  console.log(`\nThe input text is ${Math.max(output.aleko, output.zahari)}% more likely to be authored by ${output.aleko > output.zahari ? "Aleko Konstantinov then by Zahari Stoyanov" : "Zahari Stoyanov then by Aleko Konstantinov"}.\n`)
+}
 
-console.log(calssify());
+(() => {
+  calssify()
+  print()
+})()
