@@ -6,7 +6,9 @@ const input = fs.readFileSync('input.txt', 'utf8')
 const output = {aleko: 0, zahari: 0}
 
 function countWords(text) {
-  var wordArr = text.replace(/[.,\/#!?$%\^&\*;:{}=\-_`~()]/g, '').split(' ')
+  var wordArr =
+    text.replace(/[.,\/#!?$%\^&\*;:{}=\-_`~()]/g, '').
+    split(' ')
 
   const res = {}
 
@@ -32,17 +34,17 @@ function calssify() {
     }
 
     if (!alekoMap[curr]) {
-			res.zahari += 2
+			res.zahari += 2*inputMap[curr]
 			return
 		}
 
     if (!zahariMap[curr]) {
-			res.aleko += 2
+			res.aleko += 2*inputMap[curr]
 			return
 		}
 
-    if (alekoMap[curr] < zahariMap[curr]) res.zahari++
-    else if (alekoMap[curr] > zahariMap[curr]) res.aleko++
+    if (alekoMap[curr] < zahariMap[curr]) res.zahari += inputMap[curr]
+    else if (alekoMap[curr] > zahariMap[curr]) res.aleko += inputMap[curr]
 		else {
 			res.aleko++
 			res.zahari++
@@ -66,3 +68,15 @@ function print() {
   calssify()
   print()
 })()
+
+     /*
+      а а а а в
+      б б б б в
+
+      а б б в
+      1 2
+      2 3
+
+      33 40
+      67 60
+      */
